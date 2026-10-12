@@ -2,24 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * Master seeder. Runs the sub-seeders in the correct order so FKs resolve.
+ */
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            UsersSeeder::class,       // Admin + demo customer
+            CategoriesSeeder::class,  // Sedan, SUV, Luxury, Van
+            VehiclesSeeder::class,    // Fleet keyed by registration_no
         ]);
     }
 }
