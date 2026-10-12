@@ -1,176 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+@section('title', 'Login')
 
-<head>
+@section('content')
+<div class="max-w-md mx-auto">
+    <div class="rz-card p-8">
+        <h1 class="text-2xl font-bold mb-1">Welcome back</h1>
+        <p class="text-sm text-gray-400 mb-6">Log in to your Rakz Rental account.</p>
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Rakz Rental - Login</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <style>
-
-        body {
-            background-color: #D2C1B6;
-        }
-
-        .auth-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .auth-card {
-            width: 450px;
-            border: none;
-            border-radius: 15px;
-        }
-
-        .brand {
-            color: #1B3C53;
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .btn-rakz {
-            background-color: #234C6A;
-            color: white;
-        }
-
-        .btn-rakz:hover {
-            background-color: #1B3C53;
-            color: white;
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<div class="auth-container">
-
-    <div class="card auth-card shadow">
-
-        <div class="card-body p-5">
-
-            <div class="text-center mb-4">
-
-                <div class="brand">
-                    Rakz Rental
-                </div>
-
-                <p class="text-muted">
-                    Login to your account
-                </p>
-
+        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            @csrf
+            <div>
+                <label class="text-sm text-gray-300 block mb-1" for="email">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required
+                    class="rz-input w-full rounded-md px-3 py-2" data-testid="login-email">
             </div>
-
-
-            @if(session('success'))
-
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-
-            @endif
-
-
-            @if(session('error'))
-
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-
-            @endif
-
-
-            @if($errors->any())
-
-                <div class="alert alert-danger">
-
-                    @foreach($errors->all() as $error)
-
-                        <div>{{ $error }}</div>
-
-                    @endforeach
-
-                </div>
-
-            @endif
-
-
-            <form method="POST" action="{{ route('login.submit') }}">
-
-                @csrf
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        name="email"
-                        class="form-control"
-                        value="{{ old('email') }}"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="mb-4">
-
-                    <label class="form-label">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        class="form-control"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="btn btn-rakz w-100"
-                >
-                    Login
-                </button>
-
-            </form>
-
-
-            <div class="text-center mt-4">
-
-                <p>
-                    Don't have an account?
-                    <a href="{{ route('register') }}">
-                        Sign Up
-                    </a>
-                </p>
-
+            <div>
+                <label class="text-sm text-gray-300 block mb-1" for="password">Password</label>
+                <input id="password" type="password" name="password" required
+                    class="rz-input w-full rounded-md px-3 py-2" data-testid="login-password">
             </div>
+            <label class="flex items-center gap-2 text-sm text-gray-400">
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+            <button type="submit" class="rz-btn w-full rounded-md py-2.5" data-testid="login-submit">
+                Log in <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </form>
 
+        <p class="text-sm text-gray-400 mt-6 text-center">
+            New to Rakz Rental? <a href="{{ route('register') }}" class="rz-primary font-medium" data-testid="link-register">Create an account</a>
+        </p>
+
+        <div class="mt-6 border-t border-white/10 pt-4 text-xs text-gray-500">
+            <p class="font-semibold text-gray-300 mb-1">Demo credentials</p>
+            <p>Admin: admin@rakzrental.com / admin123</p>
+            <p>Customer: customer@rakzrental.com / customer123</p>
         </div>
-
     </div>
-
 </div>
-
-</body>
-
-</html>
+@endsection

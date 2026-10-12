@@ -2,38 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * In-app notification sent to a customer, for example when their vehicle
+ * is swapped out via a replacement or when their booking is confirmed/cancelled.
+ */
 class Notification extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'booking_id',
         'title',
         'message',
-        'is_read',
+        'type',
+        'read_at',
     ];
 
     protected $casts = [
-        'is_read' => 'boolean',
+        'read_at' => 'datetime',
     ];
 
-    /**
-     * Notification belongs to a customer.
-     */
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Notification belongs to a booking.
-     */
-    public function booking()
+    public function isUnread(): bool
     {
-        return $this->belongsTo(Booking::class);
+        return is_null($this->read_at);
     }
 }

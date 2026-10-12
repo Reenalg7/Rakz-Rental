@@ -2,60 +2,78 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Notification;
 
+/**
+ * User model
+ * ---------------------------------------------------------------------------
+ * Represents both customers and admins. The `role` column distinguishes
+ * between them ('admin' | 'customer'). Role-based middleware uses this.
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'nic',
+        'driver_license',
         'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /** All bookings belonging to this user (as customer). */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'user_id');
+    }
+
+    /** Vehicles this user has saved as favorites. */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
+
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Convenience: has this user favorited the given vehicle registration?
+     * Called from Blade views via `auth()->user()->hasFavorited($v)`.
      */
-    protected function casts(): array
+    public function hasFavorited(string $registrationNo): bool
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->favorites()
+            ->where('vehicle_registration_no', $registrationNo)
+            ->exists();
     }
 
-    public function bookings()
+    /** Notifications sent to this user. */
+    public function userNotifications(): HasMany
     {
-    return $this->hasMany(Booking::class);
+        return $this->hasMany(Notification::class, 'user_id');
     }
 
-    public function notifications()
+    public function isAdmin(): bool
     {
-    return $this->hasMany(Notification::class);
+        return $this->role === 'admin';
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
     }
 }
