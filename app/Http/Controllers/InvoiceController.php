@@ -36,7 +36,14 @@ class InvoiceController extends Controller
             $user->isAdmin() ? 'admin.bookings.show' : 'customer.bookings.show',
             $booking
         );
-        $qrDataUri = QrCodeGenerator::dataUri($bookingUrl, 180);
+        $qrDataUri = null;
+
+            try {
+             $qrDataUri = QrCodeGenerator::dataUri($bookingUrl, 180);
+            } 
+            catch (\Throwable $e) {
+                \Log::error('Invoice QR generation failed: ' . $e->getMessage());
+            }
 
         $pdf = Pdf::loadView('invoices.booking', [
                 'booking' => $booking,

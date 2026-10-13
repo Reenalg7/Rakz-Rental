@@ -17,16 +17,12 @@
          On first visit (no stored key), fall back to the OS/browser
          `prefers-color-scheme` so new users get their system theme. -->
     <script>
+       
         (function(){
-            try {
-                var saved = localStorage.getItem('rz-theme');
-                var t = saved
-                    ? saved
-                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-                document.documentElement.setAttribute('data-theme', t);
-            } catch (e) { /* localStorage may be blocked */ }
+            document.documentElement.setAttribute('data-theme', 'dark');
         })();
-    </script>
+
+            </script>
 
     <style>
         /* Dark theme (default) */
@@ -74,6 +70,14 @@
         .rz-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
         .rz-nav { background: var(--rz-nav-bg); border-bottom: 1px solid var(--rz-nav-border); }
         .rz-footer { background: var(--rz-nav-bg); border-top: 1px solid var(--rz-nav-border); color: var(--rz-muted); }
+
+        /* White calendar icon on the booking date fields */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: brightness(0) invert(1);
+            opacity: 1;
+            cursor: pointer;
+        }
+
     </style>
     @stack('head')
 </head>
@@ -107,13 +111,6 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <!-- Theme toggle (visible to everyone, state saved in localStorage) -->
-            <button type="button" id="themeToggle"
-                class="text-sm rz-btn-ghost px-3 py-1.5 rounded-md" data-testid="theme-toggle"
-                aria-label="Toggle colour theme" title="Toggle light / dark theme (Shift+T)">
-                <i class="fa-solid fa-moon" id="themeIconDark"></i>
-                <i class="fa-solid fa-sun hidden" id="themeIconLight"></i>
-            </button>
             @auth
                 <span class="hidden sm:inline text-sm text-gray-400">Hi, {{ auth()->user()->name }}</span>
                 @if(auth()->user()->isCustomer())
@@ -181,15 +178,6 @@
             apply(current);
         });
 
-        // Keyboard shortcut: Shift+T toggles the theme.
-        // Ignored while typing in form fields so it never eats real input.
-        document.addEventListener('keydown', function(e){
-            if (!e.shiftKey || e.key !== 'T' || e.ctrlKey || e.metaKey || e.altKey) return;
-            var el = document.activeElement;
-            if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)) return;
-            e.preventDefault();
-            btn.click();
-        });
     })();
 </script>
 

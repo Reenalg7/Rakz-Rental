@@ -8,13 +8,25 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 rz-card overflow-hidden">
-        <div class="aspect-video bg-black/40">
-            @if($vehicle->image_url)
-                <img src="{{ $vehicle->image_url }}" class="w-full h-full object-cover">
-            @else
-                <div class="w-full h-full flex items-center justify-center text-gray-600"><i class="fa-solid fa-car text-7xl"></i></div>
-            @endif
+        
+    <div class="aspect-video bg-black/40 overflow-hidden">
+    @php
+        $vehicleImage = 'images/Rakz car/' . $vehicle->registration_no . '.jpg';
+    @endphp
+
+    @if(file_exists(public_path($vehicleImage)))
+        <img
+            src="{{ asset($vehicleImage) }}"
+            alt="{{ $vehicle->name }} - {{ $vehicle->registration_no }}"
+            class="w-full h-full object-cover"
+        >
+    @else
+        <div class="w-full h-full flex items-center justify-center text-gray-600">
+            <i class="fa-solid fa-car text-7xl"></i>
         </div>
+    @endif
+    </div>
+
         <div class="p-6">
             <div class="flex items-start justify-between mb-4 flex-wrap gap-2">
                 <div>
