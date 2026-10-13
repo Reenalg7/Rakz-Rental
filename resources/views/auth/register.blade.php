@@ -21,7 +21,7 @@
                 <label class="text-sm text-gray-300 block mb-1">Phone</label>
                 <input type="text" name="phone" value="{{ old('phone') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="register-phone">
             </div>
-
+            
             <div class="sm:col-span-2">
                 <label class="text-sm text-gray-300 block mb-1">Address</label>
                 <input type="text" name="address" value="{{ old('address') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="register-address">

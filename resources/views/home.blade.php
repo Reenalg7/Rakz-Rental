@@ -58,4 +58,15 @@
         </div>
     @endif
 </section>
+
+
+<!-- See All Vehicles -->
+<div class="flex justify-end mt-6">
+    <a href="{{ route('customer.vehicles.index') }}"
+       class="text-sm rz-primary"
+       data-testid="home-see-all-vehicles">
+        See all →
+    </a>
+</div>
+
 @endsection

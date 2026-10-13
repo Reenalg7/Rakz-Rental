@@ -12,15 +12,11 @@
          On first visit, honour the OS `prefers-color-scheme` so a daylight
          admin lands in light mode without touching the toggle. -->
     <script>
+       
         (function(){
-            try {
-                var saved = localStorage.getItem('rz-admin-theme');
-                var t = saved
-                    ? saved
-                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-                document.documentElement.setAttribute('data-theme', t);
-            } catch (e) {}
+            document.documentElement.setAttribute('data-theme', 'dark');
         })();
+
     </script>
     <style>
         /* Dark (default) — ops dashboards look sharper this way. */
@@ -119,12 +115,6 @@
             <p class="text-xs" style="color: var(--rz-muted);">@yield('page_subtitle', 'Rakz Rental administration')</p>
         </div>
         <div class="flex items-center gap-3 text-sm" style="color: var(--rz-muted);">
-            <button type="button" id="adminThemeToggle"
-                class="rz-btn-ghost px-3 py-1.5 rounded-md" data-testid="admin-theme-toggle"
-                title="Toggle light / dark theme (Shift+T)" aria-label="Toggle theme">
-                <i class="fa-solid fa-moon" id="adminThemeIconDark"></i>
-                <i class="fa-solid fa-sun hidden" id="adminThemeIconLight"></i>
-            </button>
             <span><i class="fa-regular fa-user mr-1"></i>{{ auth()->user()->name }}</span>
         </div>
     </header>
@@ -164,15 +154,6 @@
             apply(current);
         });
 
-        // Keyboard shortcut: Shift+T toggles the theme.
-        // Ignored while typing in form fields.
-        document.addEventListener('keydown', function(e){
-            if (!e.shiftKey || e.key !== 'T' || e.ctrlKey || e.metaKey || e.altKey) return;
-            var el = document.activeElement;
-            if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)) return;
-            e.preventDefault();
-            btn.click();
-        });
     })();
 </script>
 

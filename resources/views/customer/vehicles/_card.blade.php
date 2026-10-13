@@ -25,13 +25,24 @@
             <span>Compare</span>
         </label>
     @endif
-    <div class="aspect-video bg-black/40 overflow-hidden">
-        @if($v->image_url)
-            <img src="{{ $v->image_url }}" alt="{{ $v->name }}" class="w-full h-full object-cover">
-        @else
-            <div class="w-full h-full flex items-center justify-center text-gray-600"><i class="fa-solid fa-car text-5xl"></i></div>
-        @endif
-    </div>
+   <div class="aspect-video bg-black/40 overflow-hidden">
+    @php
+        $vehicleImage = 'images/Rakz car/' . $v->registration_no . '.jpg';
+    @endphp
+
+    @if(file_exists(public_path($vehicleImage)))
+        <img
+            src="{{ asset($vehicleImage) }}"
+            alt="{{ $v->name }} - {{ $v->registration_no }}"
+            class="w-full h-full object-cover"
+            loading="lazy"
+        >
+    @else
+        <div class="w-full h-full flex items-center justify-center text-gray-600">
+            <i class="fa-solid fa-car text-5xl"></i>
+        </div>
+    @endif
+</div>
     <div class="p-5">
         <div class="flex items-start justify-between mb-2">
             <div>
