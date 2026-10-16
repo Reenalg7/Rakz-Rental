@@ -9,30 +9,30 @@
         body { font-family: DejaVu Sans, sans-serif; color: #111; font-size: 12px; margin: 0; padding: 0; }
         .wrap { padding: 30px 40px; }
 
-        .header { background: #0B0F19; color: #F9FAFB; padding: 20px 30px; margin: -30px -40px 20px; }
-        .header .brand { font-size: 20px; font-weight: bold; letter-spacing: 1px; color: #D4AF37; }
-        .header .tag { font-size: 10px; color: #9CA3AF; }
+        .header { background: #005691; color: #FFFFFF; padding: 20px 30px; margin: -30px -40px 20px; }
+        .header .brand { font-size: 20px; font-weight: bold; letter-spacing: 1px; color: #FFFFFF; }
+        .header .tag { font-size: 10px; color: #E8F1F5; }
         .header .inv-no { float: right; text-align: right; }
         .header .inv-no .num { font-size: 18px; font-weight: bold; }
 
-        h2 { font-size: 14px; margin: 20px 0 8px; color: #0B0F19; border-bottom: 2px solid #D4AF37; padding-bottom: 4px; }
+        h2 { font-size: 14px; margin: 20px 0 8px; color: #004A7C; border-bottom: 2px solid #005691; padding-bottom: 4px; }
 
         .meta { width: 100%; margin-bottom: 20px; }
         .meta td { vertical-align: top; width: 50%; }
-        .meta .label { color: #6B7280; font-size: 10px; text-transform: uppercase; }
+        .meta .label { color: #506576; font-size: 10px; }
         .meta .value { font-weight: bold; }
 
         table.lines { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        table.lines th { background: #F3F4F6; text-align: left; padding: 8px; border-bottom: 2px solid #D4AF37; font-size: 11px; }
-        table.lines td { padding: 8px; border-bottom: 1px solid #E5E7EB; }
+        table.lines th { background: #E8F1F5; text-align: left; padding: 8px; border-bottom: 2px solid #005691; font-size: 11px; }
+        table.lines td { padding: 8px; border-bottom: 1px solid #D4E2EB; }
         table.lines td.r, table.lines th.r { text-align: right; }
 
         .totals { width: 50%; margin-left: 50%; margin-top: 10px; }
         .totals td { padding: 4px 8px; }
-        .totals .label { color: #6B7280; }
+        .totals .label { color: #506576; }
         .totals .v { text-align: right; }
-        .totals .grand td { border-top: 2px solid #0B0F19; font-weight: bold; font-size: 14px; padding-top: 8px; }
-        .totals .grand .v { color: #D4AF37; }
+        .totals .grand td { border-top: 2px solid #004A7C; font-weight: bold; font-size: 14px; padding-top: 8px; }
+        .totals .grand .v { color: #004A7C; }
 
         .mono { font-family: DejaVu Sans Mono, monospace; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
@@ -40,8 +40,8 @@
         .b-unpaid { background: #FEF3C7; color: #92400E; }
         .b-refunded { background: #E5E7EB; color: #374151; }
 
-        .notice { background: #FEF3C7; border-left: 3px solid #D97706; padding: 8px 10px; font-size: 11px; margin: 10px 0; color: #92400E; }
-        .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #E5E7EB; font-size: 10px; color: #6B7280; text-align: center; }
+        .notice { background: #E8F1F5; border-left: 3px solid #005691; padding: 8px 10px; font-size: 11px; margin: 10px 0; color: #004A7C; }
+        .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #D4E2EB; font-size: 10px; color: #506576; text-align: center; }
     </style>
 </head>
 <body>
@@ -116,13 +116,13 @@
             <tr>
                 <td>
                     <strong>{{ $booking->vehicle?->name }}</strong><br>
-                    <span style="color:#6B7280;">{{ $booking->vehicle?->make }} {{ $booking->vehicle?->model }} · {{ $booking->vehicle?->year }}</span><br>
-                    <span style="color:#6B7280;">{{ $booking->vehicle?->category?->name }}</span>
+                    <span style="color:#506576;">{{ $booking->vehicle?->make }} {{ $booking->vehicle?->model }} · {{ $booking->vehicle?->year }}</span><br>
+                    <span style="color:#506576;">{{ $booking->vehicle?->category?->name }}</span>
                 </td>
                 <td class="mono"><strong>{{ $booking->vehicle_registration_no }}</strong></td>
                 <td>
                     {{ $booking->pickup_date->format('M d, Y') }}<br>
-                    &nbsp;→ {{ $booking->return_date->format('M d, Y') }}
+                    &nbsp;to {{ $booking->return_date->format('M d, Y') }}
                 </td>
                 <td class="r">{{ $booking->total_days }}</td>
                 <td class="r">{{ number_format($booking->daily_rate_snapshot, 2) }}</td>

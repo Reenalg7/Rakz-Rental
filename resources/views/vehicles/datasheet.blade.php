@@ -8,42 +8,42 @@
         body { font-family: DejaVu Sans, sans-serif; color: #111; font-size: 12px; margin: 0; padding: 0; }
         .wrap { padding: 30px 40px; }
 
-        .header { background: #0B0F19; color: #F9FAFB; padding: 18px 30px; margin: -30px -40px 20px; }
-        .header .brand { font-size: 18px; font-weight: bold; letter-spacing: 1px; color: #D4AF37; }
-        .header .tag { font-size: 10px; color: #9CA3AF; }
-        .header .reg-box { float: right; text-align: right; background: #D4AF37; color: #0B0F19; padding: 6px 14px; border-radius: 4px; }
-        .header .reg-box .label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+        .header { background: #005691; color: #FFFFFF; padding: 18px 30px; margin: -30px -40px 20px; }
+        .header .brand { font-size: 18px; font-weight: bold; letter-spacing: 1px; color: #FFFFFF; }
+        .header .tag { font-size: 10px; color: #E8F1F5; }
+        .header .reg-box { float: right; text-align: right; background: #FFFFFF; color: #004A7C; padding: 6px 14px; border-radius: 4px; }
+        .header .reg-box .label { font-size: 9px; letter-spacing: 1px; }
         .header .reg-box .no { font-size: 22px; font-weight: bold; font-family: DejaVu Sans Mono, monospace; }
 
-        h1 { font-size: 22px; margin: 0 0 6px; color: #0B0F19; }
-        h2 { font-size: 14px; margin: 20px 0 8px; color: #0B0F19; border-bottom: 2px solid #D4AF37; padding-bottom: 4px; }
-        .sub { color: #6B7280; font-size: 13px; margin: 0 0 20px; }
+        h1 { font-size: 22px; margin: 0 0 6px; color: #004A7C; }
+        h2 { font-size: 14px; margin: 20px 0 8px; color: #004A7C; border-bottom: 2px solid #005691; padding-bottom: 4px; }
+        .sub { color: #506576; font-size: 13px; margin: 0 0 20px; }
 
-        .photo { width: 100%; height: 220px; background: #F3F4F6; margin-bottom: 20px; text-align: center; overflow: hidden; border-radius: 6px; }
+        .photo { width: 100%; height: 220px; background: #E8F1F5; margin-bottom: 20px; text-align: center; overflow: hidden; border-radius: 6px; }
         .photo img { width: 100%; height: 220px; object-fit: cover; }
-        .photo .ph { display: inline-block; padding-top: 90px; color: #9CA3AF; font-size: 14px; }
+        .photo .ph { display: inline-block; padding-top: 90px; color: #506576; font-size: 14px; }
 
         .specs { width: 100%; border-collapse: collapse; }
-        .specs td { padding: 10px 8px; border-bottom: 1px solid #E5E7EB; vertical-align: top; }
-        .specs .k { color: #6B7280; width: 40%; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .specs .v { font-weight: bold; color: #0B0F19; font-size: 13px; }
+        .specs td { padding: 10px 8px; border-bottom: 1px solid #D4E2EB; vertical-align: top; }
+        .specs .k { color: #506576; width: 40%; font-size: 11px; }
+        .specs .v { font-weight: bold; color: #14232F; font-size: 13px; }
 
-        .rate { background: #FFFBEB; border-left: 3px solid #D4AF37; padding: 14px 18px; margin-top: 20px; border-radius: 4px; }
-        .rate .label { color: #92400E; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .rate .amount { color: #0B0F19; font-size: 24px; font-weight: bold; margin-top: 2px; }
-        .rate .per { color: #6B7280; font-size: 12px; }
+        .rate { background: #E8F1F5; border-left: 3px solid #005691; padding: 14px 18px; margin-top: 20px; border-radius: 4px; }
+        .rate .label { color: #004A7C; font-size: 11px; }
+        .rate .amount { color: #004A7C; font-size: 24px; font-weight: bold; margin-top: 2px; }
+        .rate .per { color: #506576; font-size: 12px; }
 
         .status { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; }
         .s-available { background: #D1FAE5; color: #065F46; }
         .s-maintenance { background: #FEF3C7; color: #92400E; }
         .s-retired { background: #FEE2E2; color: #991B1B; }
 
-        .notice { background: #F9FAFB; padding: 10px 14px; font-size: 11px; color: #4B5563; margin-top: 20px; border-radius: 4px; }
+        .notice { background: #FAFAFA; border: 1px solid #D4E2EB; padding: 10px 14px; font-size: 11px; color: #14232F; margin-top: 20px; border-radius: 4px; }
         .qr { text-align: center; margin-top: 20px; }
         .qr img { width: 100px; height: 100px; background: #FFF; padding: 4px; border-radius: 4px; }
-        .qr .cap { color: #6B7280; font-size: 10px; margin-top: 4px; }
+        .qr .cap { color: #506576; font-size: 10px; margin-top: 4px; }
 
-        .footer { margin-top: 25px; padding-top: 10px; border-top: 1px solid #E5E7EB; font-size: 10px; color: #6B7280; text-align: center; }
+        .footer { margin-top: 25px; padding-top: 10px; border-top: 1px solid #D4E2EB; font-size: 10px; color: #506576; text-align: center; }
     </style>
 </head>
 <body>
@@ -64,13 +64,13 @@
         @if($vehicle->image_url)
             <img src="{{ $vehicle->image_url }}" alt="{{ $vehicle->name }}">
         @else
-            <span class="ph">[ No photo on file ]</span>
+            <span class="ph">No photo on file</span>
         @endif
     </div>
 
     <h2>Specifications</h2>
     <table class="specs">
-        <tr><td class="k">Registration No</td><td class="v" style="font-family: DejaVu Sans Mono, monospace; color: #D4AF37;">{{ $vehicle->registration_no }}</td></tr>
+        <tr><td class="k">Registration No</td><td class="v" style="font-family: DejaVu Sans Mono, monospace; color: #004A7C;">{{ $vehicle->registration_no }}</td></tr>
         <tr><td class="k">Make</td><td class="v">{{ $vehicle->make }}</td></tr>
         <tr><td class="k">Model</td><td class="v">{{ $vehicle->model }}</td></tr>
         <tr><td class="k">Year</td><td class="v">{{ $vehicle->year }}</td></tr>
