@@ -20,7 +20,6 @@ use Illuminate\View\View;
 /**
  * BookingController (customer-facing)
  * ---------------------------------------------------------------------------
- * Booking flow (per SRS + lecturer feedback):
  *   Select Vehicle -> Pick Dates -> Check Availability -> Calculate Price
  *   -> Confirm -> Store Booking -> Show Confirmation
  *
@@ -31,7 +30,7 @@ use Illuminate\View\View;
  */
 class BookingController extends Controller
 {
-    /** Step 1: show the booking form for a given vehicle. */
+    /**  1: show the booking form for a given vehicle. */
     public function create(Vehicle $vehicle): View
     {
         abort_if($vehicle->status !== 'available', 404);
@@ -43,7 +42,7 @@ class BookingController extends Controller
     {
         $data = $request->validate([
             'pickup_date' => ['required', 'date', 'after_or_equal:today'],
-            'return_date' => ['required', 'date', 'after_or_equal:pickup_date'],
+            'return_date' => ['required', 'date', 'after:pickup_date'],
         ]);
 
         $pickup = Carbon::parse($data['pickup_date']);
@@ -63,14 +62,14 @@ class BookingController extends Controller
         ]);
     }
 
-    /** Step 2: store the booking (final submit). */
+    /**  store the booking (final submit). */
     public function store(Request $request, Vehicle $vehicle): RedirectResponse
     {
         abort_if($vehicle->status !== 'available', 404);
 
         $data = $request->validate([
             'pickup_date' => ['required', 'date', 'after_or_equal:today'],
-            'return_date' => ['required', 'date', 'after_or_equal:pickup_date'],
+            'return_date' => ['required', 'date', 'after:pickup_date'],
             'notes' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -106,7 +105,7 @@ class BookingController extends Controller
                 'total_days' => $days,
                 'daily_rate_snapshot' => $vehicle->daily_rate,
                 'total_amount' => $total,
-                'status' => 'pending',
+                'status' => 'confirmed',
                 'notes' => $data['notes'] ?? null,
             ]);
 
@@ -123,7 +122,7 @@ class BookingController extends Controller
         // Email the customer that we received their booking.
         // We wrap in try/catch so a mail failure never blocks the booking.
         try {
-            Mail::to($booking->user->email)->send(new BookingConfirmed($booking, 'created'));
+            Mail::to($booking->user->email)->send(new BookingConfirmed($booking, 'confirmed'));
         } catch (\Throwable $e) {
             Log::warning('Booking email failed: '.$e->getMessage());
         }
@@ -133,7 +132,7 @@ class BookingController extends Controller
             Booking::class, (string) $booking->id);
 
         return redirect()->route('customer.bookings.show', $booking)
-            ->with('success', 'Booking created successfully. Reference #'.$booking->id);
+            ->with('success', 'Booking confirmed successfully. Reference #'.$booking->id);
     }
 
     /** Customer sees only their own bookings. */
@@ -164,10 +163,7 @@ class BookingController extends Controller
             return back()->with('error', 'Only pending or confirmed bookings can be cancelled.');
         }
 
-        $booking->update(['status' => 'cancelled']);
-        if ($booking->billing && $booking->billing->status === 'unpaid') {
-            $booking->billing->update(['status' => 'refunded']);
-        }
+       $booking->update(['status' => 'cancelled']);
 
         AuditLogger::log('booking.cancel', "Customer cancelled booking #{$booking->id}",
             Booking::class, (string) $booking->id);

@@ -14,16 +14,20 @@
         <form method="POST" action="{{ route('customer.bookings.store', $vehicle->registration_no) }}" id="bookingForm" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="text-sm text-gray-300 block mb-1">Pickup date</label>
-                    <input id="pickup_date" type="date" name="pickup_date" required min="{{ date('Y-m-d') }}"
-                        value="{{ old('pickup_date') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="booking-pickup">
-                </div>
-                <div>
-                    <label class="text-sm text-gray-300 block mb-1">Return date</label>
-                    <input id="return_date" type="date" name="return_date" required min="{{ date('Y-m-d') }}"
-                        value="{{ old('return_date') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="booking-return">
-                </div>
+                
+        <div>
+            <label class="text-sm text-gray-300 block mb-1">Pickup date</label>
+            <input id="pickup_date" type="date" name="pickup_date" required
+                min="{{ \Carbon\Carbon::now('Pacific/Fiji')->toDateString() }}"
+                value="{{ old('pickup_date') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="booking-pickup">
+        </div>
+        <div>
+            <label class="text-sm text-gray-300 block mb-1">Return date</label>
+            <input id="return_date" type="date" name="return_date" required
+                min="{{ \Carbon\Carbon::now('Pacific/Fiji')->toDateString() }}"
+                value="{{ old('return_date') }}" class="rz-input w-full rounded-md px-3 py-2" data-testid="booking-return">
+        </div>
+
             </div>
 
             <div>

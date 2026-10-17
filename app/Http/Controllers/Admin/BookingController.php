@@ -48,6 +48,17 @@ class BookingController extends Controller
             'status' => ['required', 'in:pending,confirmed,cancelled,completed'],
         ]);
 
+            // Prevent completing a booking before payment is recorded.
+        if (
+            $data['status'] === 'completed'
+            && (!$booking->billing || $booking->billing->status !== 'paid')
+        ) {
+            return back()->with(
+                'error',
+                'This booking cannot be completed until payment has been recorded.'
+            );
+        }
+
         $old = $booking->status;
         $booking->update(['status' => $data['status']]);
 
@@ -82,22 +93,43 @@ class BookingController extends Controller
         return back()->with('success', 'Booking status updated to '.$data['status'].'.');
     }
 
-    public function markPaid(Booking $booking): RedirectResponse
-    {
-        if ($booking->billing) {
-            $booking->billing->update([
-                'status' => 'paid',
-                'paid_at' => now(),
-                'payment_method' => 'cash',
-                'reference_no' => 'MANUAL-'.strtoupper(uniqid()),
-            ]);
-            AuditLogger::log(
-                'booking.paid',
-                "Billing marked paid for booking #{$booking->id} — FJD {$booking->total_amount}",
-                Booking::class, (string) $booking->id
-            );
-        }
+    
+public function markPaid(Booking $booking): RedirectResponse
+{
+    // Make sure this booking has a billing record.
+    $billing = $booking->billing;
 
-        return back()->with('success', 'Billing marked as paid.');
+    if (!$billing) {
+        return back()->with('error', 'No billing record exists for this booking.');
     }
+
+    // Do not accept payment for a cancelled booking.
+    if ($booking->status === 'cancelled') {
+        return back()->with('error', 'Payment cannot be recorded for a cancelled booking.');
+    }
+
+    // Prevent recording the same payment twice.
+    if ($billing->status === 'paid') {
+        return back()->with('error', 'This booking has already been paid.');
+    }
+
+    // Record the in-person cash payment.
+    $billing->update([
+        'status' => 'paid',
+        'paid_at' => now(),
+        'payment_method' => 'cash',
+        'reference_no' => 'CASH-' . strtoupper(\Illuminate\Support\Str::random(10)),
+    ]);
+
+    // Record the action in the audit log.
+    AuditLogger::log(
+        'booking.paid',
+        "Cash payment recorded for booking #{$booking->id} — FJD {$billing->amount}",
+        Booking::class,
+        (string) $booking->id
+    );
+
+    return back()->with('success', 'Cash payment recorded successfully.');
+}
+
 }
