@@ -55,14 +55,10 @@ class ProfileController extends Controller
         ]);
 
         if (!Hash::check($data['current_password'], $user->password)) {
-            return back()->withErrors([
-                'current_password' => 'Current password is incorrect.'
-            ]);
+            return back()->withErrors([ 'current_password' => 'Current password is incorrect.']);
         }
 
-        $user->update([
-            'password' => Hash::make($data['password'])
-        ]);
+        $user->update(['password' => Hash::make($data['password'])]);
 
         return back()->with('success', 'Password updated.');
     }

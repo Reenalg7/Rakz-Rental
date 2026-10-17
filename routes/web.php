@@ -62,6 +62,10 @@ Route::middleware(['auth', 'customer'])->prefix('my')->name('customer.')->group(
     // Booking history & actions
     Route::get('/bookings', [CustomerBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/{booking}', [CustomerBookingController::class, 'show'])->name('bookings.show');
+   
+    Route::get('/bookings/{booking}/invoice', [InvoiceController::class, 'download'])->name('bookings.invoice');
+    Route::post('/bookings/{booking}/cancel', [CustomerBookingController::class, 'cancel'])->name('bookings.cancel');
+
     Route::get('/bookings/{booking}/invoice', [InvoiceController::class, 'download'])->name('bookings.invoice');
     Route::post('/bookings/{booking}/cancel', [CustomerBookingController::class, 'cancel'])->name('bookings.cancel');
 

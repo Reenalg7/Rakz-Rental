@@ -15,7 +15,25 @@
                     <p class="text-sm text-gray-400">Created {{ $booking->created_at->format('M d, Y H:i') }}</p>
                 </div>
                 @php $colors = ['pending'=>'bg-amber-400/20 text-amber-200','confirmed'=>'bg-emerald-400/20 text-emerald-200','cancelled'=>'bg-red-400/20 text-red-200','completed'=>'bg-blue-400/20 text-blue-200']; @endphp
-                <span class="rz-badge {{ $colors[$booking->status] ?? '' }}" data-testid="booking-status">{{ ucfirst($booking->status) }}</span>
+                
+            <span class="rz-badge {{ $colors[$booking->status] ?? '' }}" data-testid="booking-status">
+                {{ ucfirst($booking->status) }}
+            </span>
+
+            <div class="mt-3 text-sm text-gray-300" data-testid="booking-status-message">
+                @if($booking->status === 'pending')
+                    <i class="fa-regular fa-clock mr-1 text-amber-300"></i>
+                    Your booking request has been received and is awaiting confirmation.
+                @elseif($booking->status === 'confirmed')
+                    <i class="fa-solid fa-circle-check mr-1 text-emerald-300"></i>
+                    Your booking is confirmed. Please check your payment status below.
+                @elseif($booking->status === 'cancelled')
+                    <i class="fa-solid fa-circle-xmark mr-1 text-red-300"></i>
+                    This booking has been cancelled. You cannot make a payment for it.
+                @elseif($booking->status === 'completed')
+                    <i class="fa-solid fa-flag-checkered mr-1 text-blue-300"></i>
+                    This booking has been completed. Thank you for choosing Rakz Rental.
+                @endif
             </div>
 
             @if($booking->wasReplaced())
@@ -76,29 +94,56 @@
             <div class="flex justify-between"><dt class="text-gray-400">Daily rate</dt><dd>FJD {{ number_format($booking->daily_rate_snapshot, 2) }}</dd></div>
             <div class="flex justify-between"><dt class="text-gray-400">Days</dt><dd>{{ $booking->total_days }}</dd></div>
             <div class="flex justify-between border-t border-white/10 pt-2 mt-2 font-bold"><dt>Total</dt><dd class="rz-primary">FJD {{ number_format($booking->total_amount, 2) }}</dd></div>
-            @if($booking->billing)
-                <div class="flex justify-between"><dt class="text-gray-400">Payment</dt>
-                    <dd>
-                        @if($booking->billing->status === 'paid')
-                            <span class="rz-badge bg-emerald-400/20 text-emerald-200">Paid</span>
-                        @elseif($booking->billing->status === 'refunded')
-                            <span class="rz-badge bg-gray-400/20 text-gray-200">Refunded</span>
-                        @else
-                            <span class="rz-badge bg-amber-400/20 text-amber-200">Unpaid</span>
-                        @endif
-                    </dd>
-                </div>
+            
+           
+@if($booking->billing)
+    <div class="flex justify-between items-center">
+        <dt class="text-gray-400">Payment</dt>
+        <dd>
+            @if($booking->billing->status === 'paid')
+                <span class="rz-badge bg-emerald-400/20 text-emerald-200">Paid</span>
+            @elseif($booking->billing->status === 'refunded')
+                <span class="rz-badge bg-blue-400/20 text-blue-200">Refunded</span>
+            @else
+                <span class="rz-badge bg-amber-400/20 text-amber-200">Unpaid</span>
             @endif
-        </dl>
+        </dd>
+    </div>
 
-        @if(in_array($booking->status, ['pending', 'confirmed']))
+    <div class="mt-3 text-sm text-gray-300" data-testid="payment-status-message">
+        @if($booking->billing->status === 'paid')
+            <p class="text-emerald-300">Payment completed successfully.</p>
+
+            <div class="mt-3 space-y-2">
+                <div class="flex justify-between gap-3">
+                    <span class="text-gray-400">Payment method</span>
+                    <span>{{ $booking->billing->payment_method ?? 'Not recorded' }}</span>
+                </div>
+                <div class="flex justify-between gap-3">
+                    <span class="text-gray-400">Reference</span>
+                    <span class="break-all text-right">{{ $booking->billing->reference_no ?? 'Not recorded' }}</span>
+                </div>
+                <div class="flex justify-between gap-3">
+                    <span class="text-gray-400">Payment date</span>
+                    <span>{{ $booking->billing->paid_at?->format('d M Y, H:i') ?? 'Not recorded' }}</span>
+                </div>
+            </div>
+        @elseif($booking->billing->status === 'refunded')
+            <p class="text-blue-300">This payment is marked as refunded. Contact Rakz Rental for more information.</p>
+        @elseif($booking->status === 'cancelled')
+            <p class="text-gray-400">This booking is cancelled. No payment is required.</p>
+        @else
+            <p class="text-amber-300">Payment is outstanding. Use Pay Now to complete your test payment.</p>
+        @endif
+    </div>
+@endif
+
             <form method="POST" action="{{ route('customer.bookings.cancel', $booking) }}" class="mt-5" onsubmit="return confirm('Cancel this booking?');">
                 @csrf
                 <button type="submit" class="w-full rz-btn-ghost rounded-md py-2 text-sm text-red-300 border-red-400/40 hover:border-red-400" data-testid="cancel-booking">
                     <i class="fa-regular fa-circle-xmark mr-1"></i>Cancel booking
                 </button>
             </form>
-        @endif
 
         <a href="{{ route('customer.bookings.invoice', $booking) }}" target="_blank"
            class="mt-3 w-full rz-btn rounded-md py-2 text-sm block text-center" data-testid="download-invoice">

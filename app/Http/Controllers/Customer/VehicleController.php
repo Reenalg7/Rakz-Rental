@@ -11,7 +11,6 @@ use Illuminate\View\View;
 /**
  * VehicleController (customer-facing)
  * ---------------------------------------------------------------------------
- * Supports improved SEARCH (lecturer feedback):
  *   - Keyword search across name, make, model, registration_no
  *   - Category filter
  *   - Transmission filter
@@ -27,7 +26,7 @@ class VehicleController extends Controller
             ->with('category')
             ->where('status', 'available');
 
-        // Keyword search – includes registration number (lecturer requirement).
+        // Keyword search – includes registration number.
         if ($keyword = trim((string) $request->input('q'))) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
