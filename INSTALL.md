@@ -1,6 +1,6 @@
-# Rakz Rental — Installation Guide (XAMPP + MySQL)
+﻿# Rakz Rental — Installation Guide (XAMPP + MySQL)
 
-This is the complete, standalone project. It does **not** depend on Emergent, SQLite, or any cloud service.
+This is the complete, standalone project. It does **not** depend on SQLite, or any cloud service.
 
 ---
 
@@ -200,3 +200,4 @@ rakz-rental/
 | **Audit log** | `app/Support/AuditLogger` + `app/Http/Controllers/Admin/AuditLogController`. |
 
 Enjoy the demo — good luck with the viva.
+

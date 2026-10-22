@@ -17,6 +17,10 @@ class DashboardController extends Controller
             'total_vehicles' => Vehicle::count(),
             'available_vehicles' => Vehicle::where('status', 'available')->count(),
             'maintenance_vehicles' => Vehicle::where('status', 'maintenance')->count(),
+            'retired_vehicles' => Vehicle::where('status', 'retired')->count(),
+            'booked_vehicles' => Vehicle::whereHas('bookings', function ($query) {
+                $query->whereIn('status', ['pending', 'confirmed']);
+            })->distinct()->count('registration_no'),
             'total_customers' => User::where('role', 'customer')->count(),
             'total_bookings' => Booking::count(),
             'pending_bookings' => Booking::where('status', 'pending')->count(),

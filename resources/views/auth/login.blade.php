@@ -19,9 +19,7 @@
                 <input id="password" type="password" name="password" required
                     class="rz-input w-full rounded-md px-3 py-2" data-testid="login-password">
             </div>
-            <label class="flex items-center gap-2 text-sm text-gray-400">
-                <input type="checkbox" name="remember"> Remember me
-            </label>
+            
             <button type="submit" class="rz-btn w-full rounded-md py-2.5" data-testid="login-submit">
                 Log in <i class="fa-solid fa-arrow-right ml-1"></i>
             </button>
@@ -30,12 +28,7 @@
         <p class="text-sm text-gray-400 mt-6 text-center">
             New to Rakz Rental? <a href="{{ route('register') }}" class="rz-primary font-medium" data-testid="link-register">Create an account</a>
         </p>
-
-        <div class="mt-6 border-t border-white/10 pt-4 text-xs text-gray-500">
-            <p class="font-semibold text-gray-300 mb-1">Demo credentials</p>
-            <p>Admin: admin@rakzrental.com / admin123</p>
-            <p>Customer: customer@rakzrental.com / customer123</p>
-        </div>
+        
     </div>
 </div>
 @endsection

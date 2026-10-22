@@ -45,7 +45,7 @@
                             @if($v->status !== 'available')
                                 <span class="absolute top-2 right-2 rz-badge bg-amber-400/80 text-black">{{ ucfirst($v->status) }}</span>
                             @endif
-                            <span class="absolute top-2 left-2 rz-badge bg-black/60 text-white text-xs">
+                            <span class="absolute bottom-2 right-2 rz-badge bg-black/80 text-white text-xs">
                                 <input type="checkbox" name="v[]" value="{{ $v->registration_no }}"
                                     class="compare-check mr-1 align-middle" data-testid="compare-check-{{ $v->registration_no }}">
                                 Compare

@@ -2,7 +2,7 @@
     @auth
         @if(auth()->user()->isCustomer())
             @php $isFav = auth()->user()->hasFavorited($v->registration_no); @endphp
-            <form method="POST" action="{{ route('customer.favorites.toggle', $v->registration_no) }}" class="absolute top-3 right-3 z-10">
+            <form method="POST" action="{{ route('customer.favorites.toggle', $v->registration_no) }}" class="absolute top-3 right-3 z-20">
                 @csrf
                 <button type="submit"
                     class="w-9 h-9 rounded-full bg-black/50 backdrop-blur border border-white/10 flex items-center justify-center transition hover:scale-110"
@@ -19,13 +19,14 @@
     @endauth
 
     @if(!empty($showCompare))
-        <label class="absolute top-3 left-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10 cursor-pointer text-xs text-white">
-            <input type="checkbox" name="v[]" value="{{ $v->registration_no }}"
-                class="compare-check align-middle" data-testid="compare-check-{{ $v->registration_no }}">
-            <span>Compare</span>
-        </label>
-    @endif
-   <div class="aspect-video bg-black/40 overflow-hidden">
+    <label class="absolute top-[40%] left-0 z-10 flex flex-col items-center gap-2 px-2 py-3 rounded-r-lg bg-black/70 backdrop-blur border border-white/10 cursor-pointer text-xs text-white -translate-y-1/2">
+        <input type="checkbox" name="v[]" value="{{ $v->registration_no }}"
+            class="compare-check align-middle"
+            data-testid="compare-check-{{ $v->registration_no }}">
+        <span style="writing-mode: vertical-rl; transform: rotate(180deg);">Compare</span>
+    </label>
+@endif
+   <div class="aspect-video bg-black/40 overflow-hidden relative">
     @php
         $vehicleImage = 'images/Rakz car/' . $v->registration_no . '.jpg';
     @endphp

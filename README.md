@@ -1,8 +1,6 @@
-# Rakz Rental — Car Rental Booking System
+﻿# Rakz Rental — Car Rental Booking System
 
 A university-project car rental booking system built with **Laravel 10, PHP 8.1+, and MySQL**.
-This README is the single document you need for your demo/viva.
-
 ---
 
 ## 1. Highlights (addresses the lecturer's feedback)
@@ -425,3 +423,4 @@ Tick 2 or 3 and submit → `/my/compare?v[]=LR3180&v[]=LR3181` renders a dense s
 - Template: `resources/views/customer/compare/show.blade.php`
 - Shared card partial `_card.blade.php` accepts an optional `$showCompare` flag so the home-page featured grid stays checkbox-free
 - JS: a tiny inline guard on both grids prevents the user from ticking more than 3
+

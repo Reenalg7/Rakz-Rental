@@ -2,15 +2,10 @@
 @section('page_title', 'Customers')
 
 @section('content')
-<div class="flex items-center justify-between mb-4">
-    <form method="GET" class="flex gap-2">
-        <input type="text" name="q" value="{{ request('q') }}" placeholder="Search by name / email / phone" class="rz-input rounded-md px-3 py-2 w-72" data-testid="admin-customers-search">
-        <button class="rz-btn-ghost rounded-md px-4">Search</button>
-    </form>
-    <a href="{{ route('admin.customers.create') }}" class="rz-btn rounded-md px-4 py-2 text-sm" data-testid="admin-add-customer">
-        <i class="fa-solid fa-plus mr-1"></i>Add customer
-    </a>
-</div>
+<form method="GET" class="flex gap-2 mb-4">
+    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search by name / email / phone" class="rz-input rounded-md px-3 py-2 w-72" data-testid="admin-customers-search">
+    <button class="rz-btn-ghost rounded-md px-4">Search</button>
+</form>
 
 <div class="rz-card overflow-hidden">
     <table class="w-full rz-table text-sm">
@@ -22,23 +17,7 @@
                 <td class="text-xs">{{ $c->email }}</td>
                 <td class="text-xs">{{ $c->phone ?: '—' }}</td>
                 <td>{{ $c->bookings_count }}</td>
-                <td>
-                    <div class="flex items-center gap-2">
-                        <a href="{{ route('admin.customers.show', $c) }}" class="rz-primary text-sm" data-testid="view-customer-{{ $c->id }}">View →</a>
-                        <a href="{{ route('admin.customers.edit', $c) }}" class="rz-btn-ghost rounded px-2 py-1 text-xs" data-testid="edit-customer-{{ $c->id }}">Edit</a>
-                        @if($c->bookings_count > 0)
-                            <button type="button" disabled class="rz-btn-ghost rounded px-2 py-1 text-xs text-red-300 opacity-40 cursor-not-allowed"
-                                title="Cannot delete: this customer has booking history" data-testid="delete-customer-{{ $c->id }}">Delete</button>
-                        @else
-                            <form method="POST" action="{{ route('admin.customers.destroy', $c) }}"
-                                onsubmit="return confirm(@js('Delete '.$c->name.'? This cannot be undone.'));">
-                                @csrf
-                                @method('DELETE')
-                                <button class="rz-btn-ghost rounded px-2 py-1 text-xs text-red-300" data-testid="delete-customer-{{ $c->id }}">Delete</button>
-                            </form>
-                        @endif
-                    </div>
-                </td>
+                <td><a href="{{ route('admin.customers.show', $c) }}" class="rz-primary text-sm">View →</a></td>
             </tr>
         @empty
             <tr><td colspan="5" class="text-center py-6 text-gray-400">No customers.</td></tr>

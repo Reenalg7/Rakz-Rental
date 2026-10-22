@@ -20,14 +20,29 @@
             <tr>
                 <th class="text-left p-4 w-40 align-top" style="color: var(--rz-muted);">Attribute</th>
                 @foreach($vehicles as $v)
-                    <th class="p-4 align-top" style="min-width:220px;" data-testid="compare-col-{{ $v->registration_no }}">
-                        <div class="aspect-video overflow-hidden rounded mb-3" style="background: var(--rz-input-bg);">
-                            @if($v->image_url)
-                                <img src="{{ $v->image_url }}" class="w-full h-full object-cover" alt="{{ $v->name }}">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center"><i class="fa-solid fa-car text-3xl" style="color: var(--rz-muted);"></i></div>
-                            @endif
+                    <th class="p-4 align-top" style="min-width:220px;" data-testid="compare-col-{{ $v->registration_no }}">     
+                <div class="aspect-video overflow-hidden rounded mb-3 relative"
+                    style="background: var(--rz-input-bg);">
+                    @if($v->image_url)
+                        <img
+                            src="{{ $v->image_url }}"
+                            alt="{{ $v->name }}"
+                            class="absolute inset-0 w-full h-full object-cover"
+                            loading="lazy"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="absolute inset-0 items-center justify-center"
+                            style="display: none; color: var(--rz-muted);">
+                            <i class="fa-solid fa-car text-3xl"></i>
                         </div>
+                    @else
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="color: var(--rz-muted);">
+                            <i class="fa-solid fa-car text-3xl"></i>
+                        </div>
+                    @endif
+                </div>
+
                         <div class="font-bold">{{ $v->name }}</div>
                         <div class="text-xs" style="color: var(--rz-muted);">{{ $v->make }} · {{ $v->year }}</div>
                         <div class="rz-badge mt-1 font-mono text-xs rz-primary border" style="border-color: var(--rz-card-border);">{{ $v->registration_no }}</div>

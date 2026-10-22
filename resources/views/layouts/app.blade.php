@@ -100,9 +100,19 @@
                         <i class="fa-regular fa-heart"></i> Favorites
                     </a>
                     <a href="{{ route('customer.bookings.index') }}" class="hover:rz-primary transition" data-testid="nav-my-bookings">My Bookings</a>
-                    <a href="{{ route('customer.notifications.index') }}" class="hover:rz-primary transition" data-testid="nav-notifications">
-                        <i class="fa-regular fa-bell"></i>
-                    </a>
+                    <a href="{{ route('customer.notifications.index') }}"
+                        class="relative hover:rz-primary transition"
+                        data-testid="nav-notifications"
+                        aria-label="Notifications">
+
+                            <i class="fa-regular fa-bell text-lg"></i>
+
+                            @if(isset($unreadNotificationsCount) && $unreadNotificationsCount > 0)
+                                <span class="absolute -top-2 -right-3 min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-xs flex items-center justify-center font-bold">
+                                    {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+                                </span>
+                            @endif
+                        </a>
                 @endif
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}" class="hover:rz-primary transition" data-testid="nav-admin">Admin</a>
@@ -140,13 +150,7 @@
             <i class="fa-solid fa-triangle-exclamation mr-2"></i>{{ session('error') }}
         </div>
     @endif
-    @if($errors->any())
-        <div class="rz-card border-l-4 border-amber-400 text-amber-200 px-4 py-3 mb-4" data-testid="flash-errors">
-            <ul class="list-disc list-inside text-sm space-y-1">
-                @foreach($errors->all() as $err) <li>{{ $err }}</li> @endforeach
-            </ul>
-        </div>
-    @endif
+    
 </div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
@@ -155,8 +159,9 @@
 
 <footer class="rz-footer mt-16">
     <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between gap-4 text-sm">
-        <p>&copy; {{ date('Y') }} Rakz Rental. University project demonstration.</p>
-        <p>Built with Laravel · PHP · MySQL</p>
+        <p>&copy; {{ date('Y') }} Rakz Rental. Lot 22/23 Godfrey Road Nasinu.</p>
+        <p>Contact rakzrental@gmail.com 
+        </p>
     </div>
 </footer>
 
