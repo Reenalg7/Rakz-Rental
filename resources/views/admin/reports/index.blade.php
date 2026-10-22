@@ -4,22 +4,29 @@
 
 @push('head')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+    input[data-testid="report-from"]::-webkit-calendar-picker-indicator,
+    input[data-testid="report-to"]::-webkit-calendar-picker-indicator {
+        filter: brightness(0) invert(1) !important;
+        opacity: 1 !important;
+        cursor: pointer;
+    }
+</style>
 @endpush
 
 @section('content')
 <!-- CSV export toolbar -->
 <div class="flex flex-wrap gap-2 justify-end mb-4">
-    <a href="{{ route('admin.export.revenue') }}" class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm" data-testid="export-revenue-csv">
+    <a href="{{ route('admin.export.revenue') }}"
+       class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm"
+       data-testid="export-revenue-csv">
         <i class="fa-solid fa-file-csv mr-1"></i>Revenue CSV
     </a>
-    <a href="{{ route('admin.export.utilization', ['from' => $from->toDateString(), 'to' => $to->toDateString()]) }}"
-       class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm" data-testid="export-utilization-csv">
-        <i class="fa-solid fa-file-csv mr-1"></i>Utilization CSV
-    </a>
-    <a href="{{ route('admin.export.customers') }}" class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm" data-testid="export-customers-csv">
-        <i class="fa-solid fa-file-csv mr-1"></i>Top Customers CSV
-    </a>
-    <a href="{{ route('admin.export.bookings') }}" class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm" data-testid="export-bookings-csv-all">
+
+    <a href="{{ route('admin.export.bookings') }}"
+       class="rz-btn-ghost rounded-md px-3 py-1.5 text-sm"
+       data-testid="export-bookings-csv-all">
         <i class="fa-solid fa-file-csv mr-1"></i>All Bookings CSV
     </a>
 </div>
@@ -120,22 +127,39 @@
     </div>
 </div>
 
+
 <!-- Bookings by category -->
-<div class="rz-card p-6">
-    <h2 class="text-lg font-bold mb-3">Bookings by category</h2>
+<div class="rz-card p-6 w-full min-w-0">
+    <h2 class="text-lg font-bold mb-4">Bookings by category</h2>
+
     @if($byCategory->isEmpty())
         <p class="text-sm text-gray-400">No bookings yet.</p>
     @else
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <canvas id="categoryChart" height="150" data-testid="category-chart"></canvas>
-            <table class="w-full rz-table text-sm">
-                <thead><tr><th class="text-left">Category</th><th class="text-left">Bookings</th><th class="text-left">Revenue</th></tr></thead>
+        <div class="w-full min-w-0 mb-3">
+    <div class="relative w-full" style="height: 2px;">
+        <canvas id="categoryChart"
+                data-testid="category-chart"
+                style="width: 100%; height: 100%;"></canvas>
+    </div>
+             </div>
+
+        <div class="w-full min-w-0 overflow-x-auto">
+            <table class="w-full table-auto rz-table text-sm">
+                <thead>
+                    <tr>
+                        <th class="text-left px-4 py-3">Category</th>
+                        <th class="text-left px-4 py-3">Bookings</th>
+                        <th class="text-left px-4 py-3">Revenue</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach($byCategory as $cat)
                         <tr>
-                            <td>{{ $cat->name }}</td>
-                            <td>{{ $cat->cnt }}</td>
-                            <td class="rz-primary">FJD {{ number_format($cat->revenue, 0) }}</td>
+                            <td class="px-4 py-3">{{ $cat->name }}</td>
+                            <td class="px-4 py-3">{{ $cat->cnt }}</td>
+                            <td class="px-4 py-3 rz-primary whitespace-nowrap">
+                                FJD {{ number_format($cat->revenue, 0) }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

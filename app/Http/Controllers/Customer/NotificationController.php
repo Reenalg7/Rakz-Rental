@@ -21,8 +21,15 @@ class NotificationController extends Controller
 
     public function markRead(Notification $notification): RedirectResponse
     {
-        abort_if($notification->user_id !== Auth::id(), 403);
-        $notification->update(['read_at' => now()]);
-        return back();
+        // Ensure customers can only update their own notifications.
+        abort_if((int) $notification->user_id !== (int) Auth::id(), 403);
+
+        // Mark the notification as read.
+        $notification->update([
+            'read_at' => now(),
+        ]);
+
+        // Return to the notifications page.
+        return redirect()->route('customer.notifications.index');
     }
 }

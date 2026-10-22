@@ -7,18 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * Vehicle model
- * ---------------------------------------------------------------------------
- * LECTURER REQUIREMENT: The vehicle's registration number (e.g. "LR3180")
- * is the primary key. All related tables (bookings, replacements) reference
- * `registration_no` directly instead of a numeric vehicle id.
- *
- * Status values:
- *   available   - open for new bookings
- *   maintenance - temporarily out of service
- *   retired     - permanently removed (soft retire; history preserved)
- */
 class Vehicle extends Model
 {
     use HasFactory;

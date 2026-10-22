@@ -165,6 +165,10 @@ class BookingController extends Controller
 
        $booking->update(['status' => 'cancelled']);
 
+       if ($booking->billing && $booking->billing->status === 'unpaid') {
+        $booking->billing->update(['status' => 'refunded']);
+}
+
         AuditLogger::log('booking.cancel', "Customer cancelled booking #{$booking->id}",
             Booking::class, (string) $booking->id);
 

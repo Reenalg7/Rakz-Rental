@@ -4,7 +4,7 @@
 @section('content')
 <header class="mb-6">
     <h1 class="text-3xl sm:text-4xl font-bold mb-2">Find your ride</h1>
-    <p class="text-gray-400 text-sm">Search by name, make, model or registration number. Enter dates to see only vehicles available in your window.</p>
+    <p class="text-gray-400 text-sm">Search by name, make, model or registration number, and filter by category or transmission.</p>
 </header>
 
 <!-- Search / filter form -->
@@ -31,23 +31,11 @@
             <option value="manual" @selected(request('transmission') == 'manual')>Manual</option>
         </select>
     </div>
-    <div>
-        <label class="text-xs text-gray-400">Pickup date</label>
-        <input type="date" name="pickup_date" value="{{ request('pickup_date') }}" class="rz-input w-full rounded-md px-3 py-2 mt-1" data-testid="search-pickup">
-    </div>
-    <div>
-        <label class="text-xs text-gray-400">Return date</label>
-        <input type="date" name="return_date" value="{{ request('return_date') }}" class="rz-input w-full rounded-md px-3 py-2 mt-1" data-testid="search-return">
-    </div>
 
     <div class="md:col-span-6 flex items-center gap-3">
         <button type="submit" class="rz-btn rounded-md px-5 py-2" data-testid="search-submit">
             <i class="fa-solid fa-magnifying-glass mr-1"></i>Search
         </button>
-        <a href="{{ route('customer.vehicles.index') }}" class="text-sm text-gray-400 hover:text-white" data-testid="search-clear">Clear filters</a>
-        @if(request('pickup_date') && request('return_date'))
-            <span class="text-xs rz-primary ml-auto"><i class="fa-solid fa-calendar-check mr-1"></i>Showing only vehicles available from {{ request('pickup_date') }} to {{ request('return_date') }}</span>
-        @endif
     </div>
 </form>
 

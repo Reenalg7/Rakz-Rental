@@ -109,35 +109,65 @@
             @endif
         </dd>
     </div>
+          
+<div class="mt-3 text-sm text-gray-300" data-testid="payment-status-message">
+    @if($booking->billing->status === 'paid')
+        <p class="text-emerald-300">Payment completed successfully.</p>
 
-    <div class="mt-3 text-sm text-gray-300" data-testid="payment-status-message">
-        @if($booking->billing->status === 'paid')
-            <p class="text-emerald-300">Payment completed successfully.</p>
-
-            <div class="mt-3 space-y-2">
-                <div class="flex justify-between gap-3">
-                    <span class="text-gray-400">Payment method</span>
-                    <span>{{ $booking->billing->payment_method ?? 'Not recorded' }}</span>
-                </div>
-                <div class="flex justify-between gap-3">
-                    <span class="text-gray-400">Reference</span>
-                    <span class="break-all text-right">{{ $booking->billing->reference_no ?? 'Not recorded' }}</span>
-                </div>
-                <div class="flex justify-between gap-3">
-                    <span class="text-gray-400">Payment date</span>
-                    <span>{{ $booking->billing->paid_at?->format('d M Y, H:i') ?? 'Not recorded' }}</span>
-                </div>
+        <div class="mt-3 space-y-2">
+            <div class="flex justify-between gap-3">
+                <span class="text-gray-400">Payment method</span>
+                <span>{{ $booking->billing->payment_method ?? 'Not recorded' }}</span>
             </div>
-        @elseif($booking->billing->status === 'refunded')
-            <p class="text-blue-300">This payment is marked as refunded. Contact Rakz Rental for more information.</p>
-        @elseif($booking->status === 'cancelled')
-            <p class="text-gray-400">This booking is cancelled. No payment is required.</p>
-        @else
-            <p class="text-amber-300">Payment is outstanding. Use Pay Now to complete your test payment.</p>
-        @endif
-    </div>
-@endif
 
+            <div class="flex justify-between gap-3">
+                <span class="text-gray-400">Reference</span>
+                <span class="break-all text-right">{{ $booking->billing->reference_no ?? 'Not recorded' }}</span>
+            </div>
+
+            <div class="flex justify-between gap-3">
+                <span class="text-gray-400">Payment date</span>
+                <span>{{ $booking->billing->paid_at?->format('d M Y, H:i') ?? 'Not recorded' }}</span>
+            </div>
+        </div>
+
+    @elseif($booking->billing->status === 'refunded')
+        <p class="text-blue-300">
+            This payment is marked as refunded. Contact Rakz Rental for more information.
+        </p>
+
+    @elseif($booking->status === 'cancelled')
+        <p class="text-gray-400">
+            This booking is cancelled. No payment is required.
+        </p>
+
+    @elseif($booking->status === 'confirmed')
+        <div class="mt-3 rounded-lg border border-emerald-400/30 bg-emerald-400/10 p-4">
+            <p class="font-semibold text-emerald-300 mb-2">
+                <i class="fa-solid fa-circle-check mr-1"></i>
+                Booking Confirmed!
+            </p>
+
+            <p class="text-sm text-gray-300">
+                Your vehicle has been successfully booked. Payment of
+                <strong class="text-white">
+                    FJD {{ number_format($booking->total_amount, 2) }}
+                </strong>
+                is due when you pick up your vehicle.
+            </p>
+
+            <p class="text-sm text-gray-300 mt-2">
+                Your invoice is available below for your records.
+            </p>
+        </div>
+
+    @else
+        <p class="text-amber-300">
+            Payment is outstanding. Payment will be collected at vehicle pickup.
+        </p>
+    @endif
+</div>
+     @endif
             <form method="POST" action="{{ route('customer.bookings.cancel', $booking) }}" class="mt-5" onsubmit="return confirm('Cancel this booking?');">
                 @csrf
                 <button type="submit" class="w-full rz-btn-ghost rounded-md py-2 text-sm text-red-300 border-red-400/40 hover:border-red-400" data-testid="cancel-booking">
